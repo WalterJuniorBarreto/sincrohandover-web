@@ -3,7 +3,9 @@ import { catchError } from 'rxjs';
 import { throwError } from 'rxjs';
 
 function generateUUID(): string {
-  return crypto.randomUUID ? crypto.randomUUID() : 'fallback-' + new Date().getTime();
+  return typeof crypto !== 'undefined' && crypto.randomUUID
+    ? crypto.randomUUID()
+    : `fallback-${Date.now()}`;
 }
 
 export const correlationIdInterceptor: HttpInterceptorFn = (req, next) => {
@@ -27,3 +29,5 @@ export const correlationIdInterceptor: HttpInterceptorFn = (req, next) => {
     })
   );
 };
+
+
